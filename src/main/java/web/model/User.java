@@ -2,6 +2,7 @@ package web.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "MyFirstWebApp")
 public class User {

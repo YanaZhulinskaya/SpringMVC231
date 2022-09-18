@@ -22,41 +22,41 @@ public class UsersController {
     }
 
     @GetMapping()
-    public String listUser(ModelMap modelMap) {
+    public String getAllUser(ModelMap modelMap) {
         List<User> list = userService.getAllUsers();
         modelMap.addAttribute("list", list);
         return "userList";
     }
 
     @GetMapping(value = "/new")
-    public String newUser(ModelMap model) {
+    public String addUserForm(ModelMap model) {
         model.addAttribute("user", new User());
-        return "new";
+        return "/new";
     }
 
-    @PostMapping(value = "/new")
-    public String newUser(@ModelAttribute User user) {
-        userService.save(user);
+    @PostMapping()
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
         return "redirect:/user/";
     }
 
     @GetMapping(value = "/edit/{id}")
     public String editUser(@PathVariable("id") long id, ModelMap model) {
-        User user = userService.getById(id);
+        User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "editUser";
     }
 
-    @PostMapping(value = "/edit/{id}")
-    public String editUser(@ModelAttribute User user) {
-        userService.edit(user);
-        return "redirect:/user/";
+    @PostMapping(value = "/{id}")
+    public String deleteUser(@PathVariable("id") long id) {
+        userService.deleteUser(id);
+        return "redirect:/user";
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
-        User user = userService.getById(id);
-        userService.delete(user);
+    @GetMapping(value = "/{id}")
+    public String update(@ModelAttribute("user") User user,
+                                 @PathVariable("id") long id) {
+        userService.updateUser(user, id);
         return "redirect:/user/";
     }
 }
